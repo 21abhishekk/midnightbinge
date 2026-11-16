@@ -20,7 +20,7 @@ function Stars({ rating }: { rating: number }) {
     </div>
   );
 }
-import { Product } from "@/lib/products";
+import { Product, discountPercent } from "@/lib/products";
 import { inr } from "@/lib/pricing";
 import { useCart } from "@/lib/cart";
 import Pack from "./Pack";
@@ -28,7 +28,7 @@ import Pack from "./Pack";
 export default function ProductCard({ p }: { p: Product }) {
   const { add } = useCart();
   const [added, setAdded] = useState(false);
-  const discount = Math.round(((p.mrp - p.price) / p.mrp) * 100);
+  const discount = discountPercent(p);
 
   function handleAdd() {
     add(p.id);
@@ -52,15 +52,17 @@ export default function ProductCard({ p }: { p: Product }) {
           <Link href={`/product/${p.slug}`} className="font-display font-bold leading-snug hover:text-moon transition-colors">
             {p.name}
           </Link>
-          <div className="flex items-center gap-1.5 mt-1">
-            <Stars rating={p.rating} />
-            <span className="text-xs text-mist/40">{p.rating.toFixed(1)} ({p.reviewCount})</span>
-          </div>
+          {p.rating !== undefined && (
+            <div className="flex items-center gap-1.5 mt-1">
+              <Stars rating={p.rating} />
+              <span className="text-xs text-mist/40">{p.rating.toFixed(1)} ({p.reviewCount})</span>
+            </div>
+          )}
           <p className="text-xs text-mist/50 mt-0.5">{p.weight}</p>
         </div>
         <div className="text-right shrink-0">
           <p className="font-bold">{inr(p.price)}</p>
-          <s className="text-xs text-mist/40">{inr(p.mrp)}</s>
+          {p.mrp && <s className="text-xs text-mist/40">{inr(p.mrp)}</s>}
         </div>
       </div>
 

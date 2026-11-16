@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { bySlug, products } from "@/lib/products";
+import { bySlug, discountPercent, products } from "@/lib/products";
 import { inr } from "@/lib/pricing";
 import Pack from "@/components/Pack";
 import AddButton from "./AddButton";
@@ -26,7 +26,7 @@ export const generateStaticParams = () => products.map((p) => ({ slug: p.slug })
 export default function Page({ params }: { params: { slug: string } }) {
   const p = bySlug(params.slug);
   if (!p) notFound();
-  const discount = Math.round(((p.mrp - p.price) / p.mrp) * 100);
+  const discount = discountPercent(p);
   const others = products.filter((x) => x.id !== p.id);
 
   return (
@@ -41,15 +41,17 @@ export default function Page({ params }: { params: { slug: string } }) {
         <div className="fade-up fade-up-1">
           <p className="text-xs font-bold tracking-widest text-ember uppercase">{p.category} · {p.weight}</p>
           <h1 className="font-display text-4xl font-extrabold text-gold-gradient mt-2 leading-tight">{p.name}</h1>
-          <div className="flex items-center gap-2 mt-3">
-            <Stars rating={p.rating} />
-            <span className="text-sm text-mist/50">{p.rating.toFixed(1)} · {p.reviewCount} reviews</span>
-          </div>
+          {p.rating !== undefined && (
+            <div className="flex items-center gap-2 mt-3">
+              <Stars rating={p.rating} />
+              <span className="text-sm text-mist/50">{p.rating.toFixed(1)} · {p.reviewCount} reviews</span>
+            </div>
+          )}
           <p className="mt-5 text-mist/70 leading-relaxed">{p.blurb}</p>
 
           <div className="mt-6 flex items-end gap-3">
             <span className="text-3xl font-bold">{inr(p.price)}</span>
-            <s className="text-mist/40 text-lg mb-0.5">{inr(p.mrp)}</s>
+            {p.mrp && <s className="text-mist/40 text-lg mb-0.5">{inr(p.mrp)}</s>}
             {discount > 0 && <span className="badge-discount mb-1">{discount}% off</span>}
           </div>
           <p className="text-xs text-mist/40 mt-1">Inclusive of all taxes</p>
@@ -66,7 +68,7 @@ export default function Page({ params }: { params: { slug: string } }) {
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
           {others.map((o, i) => {
-            const otherDiscount = Math.round(((o.mrp - o.price) / o.mrp) * 100);
+            const otherDiscount = discountPercent(o);
             return (
               <Link
                 key={o.id}
