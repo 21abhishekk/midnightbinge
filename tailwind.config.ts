@@ -5,15 +5,15 @@ export default {
   theme: {
     extend: {
       colors: {
-        ink:   "#160F2E",
-        deep:  "#0A0818",
-        moon:  "#E8C97A",
-        ember: "#E8622A",
-        mist:  "#EAE8F2",
-        gold:  "#C9A84C",
-        rose:  "#C4607A",
-        sky:   "#38BDF8",
-        "sky-dark": "#0284C7",
+        ink:   "#0B2F3A",
+        deep:  "#07222B",
+        moon:  "#C85A32",
+        ember: "#B34A24",
+        mist:  "#0B2F3A",
+        gold:  "#B34A24",
+        rose:  "#9C1F63",
+        sky:   "#17636D",
+        "sky-dark": "#114C54",
       },
       fontFamily: {
         display: ["var(--font-display)"],

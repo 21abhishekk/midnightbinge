@@ -1,14 +1,14 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Bricolage_Grotesque, DM_Sans, Dancing_Script } from "next/font/google";
+import { Playfair_Display, DM_Sans, JetBrains_Mono } from "next/font/google";
 import { CartProvider } from "@/lib/cart";
 import Header from "@/components/Header";
 import ThemeToggle from "@/components/ThemeToggle";
 import BackgroundDecorations from "@/components/BackgroundDecorations";
 
-const display = Bricolage_Grotesque({ subsets: ["latin"], variable: "--font-display" });
+const display = Playfair_Display({ subsets: ["latin"], variable: "--font-display" });
 const body = DM_Sans({ subsets: ["latin"], variable: "--font-body" });
-const script = Dancing_Script({ subsets: ["latin"], weight: ["700"], variable: "--font-script" });
+const script = JetBrains_Mono({ subsets: ["latin"], variable: "--font-script" });
 
 export const metadata: Metadata = {
   title: "MidnightBinge | Snacks for after dark",
